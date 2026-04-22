@@ -1,33 +1,35 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Player vastaa pelaajan toiminnasta (liikkuminen, hyökkäys).
-/// </summary>
 public class Player : MonoBehaviour
 {
     private Health health;
-    Rigidbody rb;
+    private Rigidbody rb;
 
     void Awake()
     {
-        // TODO: hae Health-komponentti
         health = GetComponent<Health>();
         rb = GetComponent<Rigidbody>();
+
+        if (health == null)
+        {
+            Debug.LogError("Health component missing!");
+        }
     }
 
-    private void Update()
+    void Update()
     {
-        if (Keyboard.current.tKey.isPressed)
+        if (Keyboard.current.tKey.wasPressedThisFrame)
         {
-
             TakeDamage(3);
         }
     }
+
     public void TakeDamage(int amount)
     {
-        // TODO: vähennä elämää Healthin kautta
-        health.Modify(-amount);
+        if (health != null)
+        {
+            health.Modify(-amount);
+        }
     }
 }
-
